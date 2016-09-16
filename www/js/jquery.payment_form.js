@@ -123,8 +123,6 @@ jQuery.extend({
         // Обработчики привязываемые к полям
         'handlers': [],
         'repliers': [],
-        'default_code_country': 7,
-        'default_code_country_lenght': 3
     },
     // настройки, которые можно передать при вызове плагина и переопределить ими default_settings
     settings = {},
@@ -1280,7 +1278,7 @@ jQuery.extend({
                         min_card_number_length = min_card_number_length > 16 || typeof min_card_number_length == 'undefined' ? 16 : min_card_number_length;
                         max_card_number_length = max_card_number_length < 16 || typeof max_card_number_length == 'undefined' ? 16 : max_card_number_length;
                     }
-                    else if (settings.accepted_card_brands[n] === 'MAESTRO') {
+                    else if (settings.accepted_card_brands[n] === 'MAESTRO' || settings.accepted_card_brands[n] === 'CHINA UNION PAY' || settings.accepted_card_brands[n] === 'MIR') {
                         min_card_number_length = min_card_number_length > 16 || typeof min_card_number_length == 'undefined' ? 16 : min_card_number_length;
                         max_card_number_length = max_card_number_length < 19 || typeof max_card_number_length == 'undefined' ? 19 : max_card_number_length;
                     }
@@ -1288,7 +1286,7 @@ jQuery.extend({
                         min_card_number_length = min_card_number_length > 15 || typeof min_card_number_length == 'undefined' ? 15 : min_card_number_length;
                         max_card_number_length = max_card_number_length < 15 || typeof max_card_number_length == 'undefined' ? 15 : max_card_number_length;
                     }
-                    else if (settings.accepted_card_brands[n] === 'DINERS CLUB') {
+                    else if (settings.accepted_card_brands[n] === 'DINERS CLUB' || settings.accepted_card_brands[n] === 'PRO100') {
                         min_card_number_length = min_card_number_length > 14 || typeof min_card_number_length == 'undefined' ? 14 : min_card_number_length;
                         max_card_number_length = max_card_number_length < 14 || typeof max_card_number_length == 'undefined' ? 14 : max_card_number_length;
                     }
@@ -1303,7 +1301,8 @@ jQuery.extend({
                     if (settings.accepted_card_brands[n] === 'MASTERCARD' || settings.accepted_card_brands[n] === 'MAESTRO' ||
                             settings.accepted_card_brands[n] === 'VISA' || settings.accepted_card_brands[n] === 'VISA ELECTRON' ||
                             settings.accepted_card_brands[n] === 'DINERS CLUB' || settings.accepted_card_brands[n] === 'DISCOVER'
-                            || settings.accepted_card_brands[n] === 'JCB') {
+                            || settings.accepted_card_brands[n] === 'JCB' || settings.accepted_card_brands[n] === 'CHINA UNION PAY' 
+                            || settings.accepted_card_brands[n] === 'MIR' || settings.accepted_card_brands[n] === 'PRO100') {
                         min_card_cvc_length = min_card_cvc_length > 3 || typeof min_card_cvc_length == 'undefined' ? 3 : min_card_cvc_length;
                         max_card_cvc_length = max_card_cvc_length < 3 || typeof max_card_cvc_length == 'undefined' ? 3 : max_card_cvc_length;
                     }
@@ -1321,7 +1320,8 @@ jQuery.extend({
                     if (settings.accepted_card_brands[n] === 'MASTERCARD' || settings.accepted_card_brands[n] === 'MAESTRO' ||
                             settings.accepted_card_brands[n] === 'VISA' || settings.accepted_card_brands[n] === 'VISA ELECTRON' ||
                             settings.accepted_card_brands[n] === 'DINERS CLUB' || settings.accepted_card_brands[n] === 'DISCOVER'
-                            || settings.accepted_card_brands[n] === 'JCB') {
+                            || settings.accepted_card_brands[n] === 'JCB' || settings.accepted_card_brands[n] === 'CHINA UNION PAY'
+                            || settings.accepted_card_brands[n] === 'MIR' || settings.accepted_card_brands[n] === 'PRO100') {
                         min_name_on_card_length = min_name_on_card_length > 3 || typeof min_name_on_card_length == 'undefined' ? 3 : min_name_on_card_length;
                         max_name_on_card_length = max_name_on_card_length < 27 || typeof max_name_on_card_length == 'undefined' ? 27 : max_name_on_card_length;
                     }
