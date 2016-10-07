@@ -882,8 +882,6 @@ jQuery.extend({
         },
         reload: function (reply) {
             location.reload();
-            // На будущее, тут можно рассмотреть случай с отображением сообщения в модальном окошке
-            // и последующего reload'а
             return this;
         },
         show_form: function (reply) {
