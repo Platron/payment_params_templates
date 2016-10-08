@@ -512,11 +512,7 @@ body a { text-decoration: none; -moz-transition: all 0.1s linear; -o-transition:
   -webkit-appearance: none;
 }
 
-.hideShowPassword-toggle-hide {
-  background-position: -44px center;
-}
-
 
 .hideShowPassword-toggle-hide {
-    background-position: -16px center;
+    background-position: -24.5px center;
 }
