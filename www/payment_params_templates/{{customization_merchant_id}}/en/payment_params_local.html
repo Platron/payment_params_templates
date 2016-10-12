@@ -19,7 +19,12 @@
         <!-- INFO: Если хотите изменить способ отображения ошибок - нужно заменить этот блок блоком из setters.js -->
         <script type="text/javascript">
             $(document).ready(function () {
-                $('input[name="card_cvc"]').hidePassword(true);
+                $('input[name="card_cvc"]').hidePassword({
+                    innerToggle: true,
+                    toggle: {
+                        attachToEvent: 'mousedown mouseup'
+                    }
+                });
                 var pluginParams = {};
 
                 pluginParams.form_type = 'card_form';
