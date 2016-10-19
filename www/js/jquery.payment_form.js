@@ -151,162 +151,163 @@ jQuery.extend({
     init_common = false;
 
     var
-            /*
-             * Установка полей и формы в состояние ок. т.е. поля верно введены
-             * @type @exp;settings@arr;ok_setter
-             */
-            ok_setter = {
-                form: function (data, text, forms, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('from: status ok');
-                    data['info_form'].removeClass("field_error").addClass("field_ok");
-                    fields.message.text('');
-                    forms.show_form.apply(this, [ID_INFO_FORM]);
-                },
-                card_num_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('card_num_fields: status ok');
-                    fields.card_num_fields.each(function (i) {
-                        $(this).removeClass("field_error").addClass("field_ok");
-                    });
-                },
-                card_num: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('card_num: status ok');
-                    fields.card_num.removeClass("field_error").addClass("field_ok");
-                },
-                exp_date_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('exp_date_fields: status ok');
-                    fields.exp_date_fields.each(function (i) {
-                        $(this).removeClass("field_error").addClass("field_ok");
-                    });
-                },
-                exp_date: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('exp_date: status ok');
-                    fields.exp_date.removeClass("field_error").addClass("field_ok");
-                },
-                name_on_card: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('name_on_card: status ok');
-                    fields.name_on_card.removeClass("field_error").addClass("field_ok");
-                },
-                card_cvc: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('name_on_card: status ok');
-                    fields.card_cvc.removeClass("field_error").addClass("field_ok");
-                },
-                phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('phone: status ok');
-                    fields.phone.removeClass("field_error").addClass("field_ok");
-                },
-                email: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('email: status ok');
-                    fields.email.removeClass("field_error").addClass("field_ok");
-                },
-                ps_additional_field: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log($(this).attr('name') + ': status ok');
+        /*
+         * Установка полей и формы в состояние ок. т.е. поля верно введены
+         * @type @exp;settings@arr;ok_setter
+         */
+        ok_setter = {
+            form: function (data, text, forms, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                console.log('from: status ok');
+                data['info_form'].removeClass("field_error").addClass("field_ok");
+                fields.message.text('');
+                forms.show_form.apply(this, [ID_INFO_FORM]);
+            },
+            card_num_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                console.log('card_num_fields: status ok');
+                fields.card_num_fields.each(function (i) {
                     $(this).removeClass("field_error").addClass("field_ok");
-                }
+                });
             },
-            /*
-             * Установка полей и формы в состояние error. т.е. поля введены неверно
-             * @type @exp;settings@arr;error_setter
-             */
-            error_setter = {
-                form: function (data, text, forms, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('from: status error');
-                    data['info_form'].removeClass("field_ok").addClass("field_error");
-                    fields.message.text(text);
-                    forms.show_form.apply(this, [ID_INFO_FORM]);
-                },
-                card_num_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('card_num_fields: status error');
-                    fields.card_num_fields.each(function (i) {
-                        $(this).removeClass("field_ok").addClass("field_error");
-                    });
-                },
-                card_num: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('card_num: status error');
-                    fields.card_num.removeClass("field_ok").addClass("field_error");
-                },
-                exp_date_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('exp_date_fields: status error');
-                    fields.exp_date_fields.each(function (i) {
-                        $(this).removeClass("field_ok").addClass("field_error");
-                    });
-                },
-                exp_date: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('exp_date: status error');
-                    fields.exp_date.removeClass("field_ok").addClass("field_error");
-                },
-                name_on_card: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('name_on_card: status error');
-                    fields.name_on_card.removeClass("field_ok").addClass("field_error");
-                },
-                card_cvc: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('card_cvc: status error');
-                    fields.card_cvc.removeClass("field_ok").addClass("field_error");
-                },
-                phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('phone: status error');
-                    fields.phone.removeClass("field_ok").addClass("field_error");
-                },
-                email: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('email: status error');
-                    fields.email.removeClass("field_ok").addClass("field_error");
-                },
-                ps_additional_field: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log($(this).attr('name') + ': status error');
-                    $(this).removeClass("field_ok").addClass("field_error");
-                }
+            card_num: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                console.log('card_num: status ok');
+                fields.card_num.removeClass("field_error").addClass("field_ok");
             },
-            /*
-             * Установка полей и формы в состояние для ввода значений. поля очищаются от классов
-             * @type @exp;settings@arr;nothing_setter
-             */
-            nothing_setter = {
-                form: function (data, text, forms, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('from: status nothing');
-                    data['info_form'].removeClass("field_error").removeClass("field_ok");
-                    fields.message.text('');
-                    forms.show_form.apply(this, [ID_INFO_FORM]);
-                },
-                card_num_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('card_num_fields: status nothing');
-                    fields.card_num_fields.each(function (i) {
-                        $(this).removeClass("field_ok").removeClass("field_error");
-                    });
-                },
-                card_num: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('card_num: status nothing');
-                    fields.card_num.removeClass("field_ok").removeClass("field_error");
-                },
-                exp_date_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('exp_date_fields: status nothing');
-                    fields.exp_date_fields.each(function (i) {
-                        $(this).removeClass("field_ok").removeClass("field_error");
-                    });
-                },
-                exp_date: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('exp_date: status nothing');
-                    fields.exp_date.removeClass("field_ok").removeClass("field_error");
-                },
-                name_on_card: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('name_on_card: status nothing');
-                    fields.name_on_card.removeClass("field_ok").removeClass("field_error");
-                },
-                card_cvc: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('card_cvc: status nothing');
-                    fields.card_cvc.removeClass("field_ok").removeClass("field_error");
-                },
-                phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('phone: status nothing');
-                    fields.phone.removeClass("field_ok").removeClass("field_error");
-                },
-                email: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log('email: status nothing');
-                    fields.email.removeClass("field_ok").removeClass("field_error");
-                },
-                ps_additional_field: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    console.log($(this).attr('name') + ': status nothing');
-                    $(this).removeClass("field_error").removeClass("field_ok");
-                }
-            };
+            exp_date_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                console.log('exp_date_fields: status ok');
+                fields.exp_date_fields.each(function (i) {
+                    $(this).removeClass("field_error").addClass("field_ok");
+                });
+            },
+            exp_date: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                console.log('exp_date: status ok');
+                fields.exp_date.removeClass("field_error").addClass("field_ok");
+            },
+            name_on_card: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                console.log('name_on_card: status ok');
+                fields.name_on_card.removeClass("field_error").addClass("field_ok");
+            },
+            card_cvc: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                console.log('name_on_card: status ok');
+                fields.card_cvc.removeClass("field_error").addClass("field_ok");
+            },
+            phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                console.log('phone: status ok');
+                fields.phone.removeClass("field_error").addClass("field_ok");
+            },
+            email: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                console.log('email: status ok');
+                fields.email.removeClass("field_error").addClass("field_ok");
+            },
+            ps_additional_field: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                console.log($(this).attr('name') + ': status ok');
+                $(this).removeClass("field_error").addClass("field_ok");
+            }
+        },
+    /*
+     * Установка полей и формы в состояние error. т.е. поля введены неверно
+     * @type @exp;settings@arr;error_setter
+     */
+    error_setter = {
+        form: function (data, text, forms, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('from: status error');
+            data['info_form'].removeClass("field_ok").addClass("field_error");
+            fields.message.text(text);
+            forms.show_form.apply(this, [ID_INFO_FORM]);
+        },
+        card_num_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('card_num_fields: status error');
+            fields.card_num_fields.each(function (i) {
+                $(this).removeClass("field_ok").addClass("field_error");
+            });
+        },
+        card_num: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('card_num: status error');
+            fields.card_num.removeClass("field_ok").addClass("field_error");
+        },
+        exp_date_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('exp_date_fields: status error');
+            fields.exp_date_fields.each(function (i) {
+                $(this).removeClass("field_ok").addClass("field_error");
+            });
+        },
+        exp_date: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('exp_date: status error');
+            fields.exp_date.removeClass("field_ok").addClass("field_error");
+        },
+        name_on_card: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('name_on_card: status error');
+            fields.name_on_card.removeClass("field_ok").addClass("field_error");
+        },
+        card_cvc: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('card_cvc: status error');
+            fields.card_cvc.removeClass("field_ok").addClass("field_error");
+        },
+        phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('phone: status error');
+            fields.phone.removeClass("field_ok").addClass("field_error");
+        },
+        email: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('email: status error');
+            fields.email.removeClass("field_ok").addClass("field_error");
+        },
+        ps_additional_field: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log($(this).attr('name') + ': status error');
+            $(this).removeClass("field_ok").addClass("field_error");
+        }
+    },
+    /*
+     * Установка полей и формы в состояние для ввода значений. поля очищаются от классов
+     * @type @exp;settings@arr;nothing_setter
+     */
+    nothing_setter = {
+        form: function (data, text, forms, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('from: status nothing');
+            var data = plugin_init_data;
+            data['info_form'].removeClass("field_error").addClass("field_ok");
+            data['info_form'].find('.' + NAME_INFO_FORM_MESSAGE_FIELD).text('');
+            forms.show_form.apply(this, [ID_INFO_FORM]);
+        },
+        card_num_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('card_num_fields: status nothing');
+            fields.card_num_fields.each(function (i) {
+                $(this).removeClass("field_ok").removeClass("field_error");
+            });
+        },
+        card_num: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('card_num: status nothing');
+            fields.card_num.removeClass("field_ok").removeClass("field_error");
+        },
+        exp_date_fields: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('exp_date_fields: status nothing');
+            fields.exp_date_fields.each(function (i) {
+                $(this).removeClass("field_ok").removeClass("field_error");
+            });
+        },
+        exp_date: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('exp_date: status nothing');
+            fields.exp_date.removeClass("field_ok").removeClass("field_error");
+        },
+        name_on_card: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('name_on_card: status nothing');
+            fields.name_on_card.removeClass("field_ok").removeClass("field_error");
+        },
+        card_cvc: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('card_cvc: status nothing');
+            fields.card_cvc.removeClass("field_ok").removeClass("field_error");
+        },
+        phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('phone: status nothing');
+            fields.phone.removeClass("field_ok").removeClass("field_error");
+        },
+        email: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('email: status nothing');
+            fields.email.removeClass("field_ok").removeClass("field_error");
+        },
+        ps_additional_field: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log($(this).attr('name') + ': status nothing');
+            $(this).removeClass("field_error").removeClass("field_ok");
+        }
+    };
 
 
     var
@@ -463,7 +464,11 @@ jQuery.extend({
                  * @returns {Boolean}
                  */
                 phone: function (phone, settings) {
-                    return (/^[0-9+]+/.test(phone));
+                    phone = phone.replace(/[^0-9]/g, "");
+                    if(phone.length > settings.max_phone_length || phone.length < settings.min_phone_length)
+                        return false;
+                    
+                    return true;
                 },
                 /**
                  * Проверка email для оповещения
@@ -812,23 +817,14 @@ jQuery.extend({
                 },
                 // обработка номера телефона
                 phone: function (e, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    var BACKSPACE_CODE = 8;
-                    var value = this.value = this.value.replace(/[^0-9+()]/g, "");
+                    var value = this.value = this.value.replace(/[^0-9]/g, "");
 
-                    // Вставка скобки и страны
-                    if (this.value === "" && e.keyCode !== BACKSPACE_CODE)
-                        this.value = "+" + settings.default_code_country + "(";
-
-                    // Закрытие скобкой кода
-                    if (this.value[this.value.length - settings.default_code_country_lenght - 1] === "(" && e.keyCode !== BACKSPACE_CODE)
-                        this.value = this.value + ")";
-
-
-                    if (value.length >= settings.min_phone_length && value.length <= settings.max_phone_length)
+                    if (value.length >= settings.min_phone_length){
                         if (validators.phone(value, settings))
                             ok_setter.phone.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
                         else
                             error_setter.phone.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
+                    }
                     else
                         nothing_setter.phone.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
                 },
@@ -864,9 +860,8 @@ jQuery.extend({
         ok: function (reply) {
             if (reply.message) {
                 var data = plugin_init_data;
-
                 data['info_form'].addClass("field_ok").removeClass("field_error");
-                plugin_init_data[PLUGIN_NAME].fields.message.text(reply.message);
+                data['info_form'].find('.' + NAME_INFO_FORM_MESSAGE_FIELD).text(reply.message);
                 forms.show_form.apply(this, [ID_INFO_FORM]);
             }
             return this;
@@ -881,7 +876,7 @@ jQuery.extend({
             return this;
         },
         reload: function (reply) {
-            location.reload();
+            window.location.reload(true);
             return this;
         },
         show_form: function (reply) {
@@ -894,7 +889,7 @@ jQuery.extend({
             if (reply.message) {
                 var data = plugin_init_data;
                 data['info_form'].addClass("field_error").removeClass("field_ok");
-                plugin_init_data[PLUGIN_NAME].fields.message.text(reply.message);
+                data['info_form'].find('.' + NAME_INFO_FORM_MESSAGE_FIELD).text(reply.message);
                 forms.show_form.apply(this, [ID_INFO_FORM]);
             }
             return this;
@@ -907,9 +902,11 @@ jQuery.extend({
             return this;
         },
         redirect: function (reply) {
-            window.location.replace(reply.url);
+            window.open(reply.url, reply.type);
+            return this;
         },
         wait: function (reply) {
+            return this;
         }
     };
 
@@ -1068,7 +1065,7 @@ jQuery.extend({
 
             if (fields.email.val() !== 'undefined')
                 arr.email = fields.email.val();
-
+            
             var ps_additional_fields = methods.get_ps_additional_fields_by_ps_name(methods.get_current_ps_name());
             if (!$.isEmptyObject(ps_additional_fields)) {
                 arr.ps_additional_fields = {};
@@ -1342,8 +1339,7 @@ jQuery.extend({
                         'id': ID_FORM_FADER,
                         'class': ID_FORM_FADER
                     });
-            $(document.body)
-                    .append(form_fader);
+            $(document.body).append(form_fader);
 
             return $('#' + ID_FORM_FADER);
         },
@@ -1621,34 +1617,33 @@ jQuery.extend({
             methods.set_plugin_name.apply(this);
 
             var $card_input_form = $(this),
-                    // ---
-                    info_message_row = $('<div></div>')
-                    .attr({
-                        'name': NAME_INFO_FORM_MESSAGE_FIELD,
-                        'class': NAME_INFO_FORM_MESSAGE_FIELD
-                    }),
-                    info_ok_button = $('<button></button>')
-                    .attr({'class': "ok_button"})
-                    .text("Ok")
-                    .bind('click.' + PLUGIN_NAME, function (e) {
-                        e.preventDefault();
-                        forms.hide_fader.apply($card_input_form, [ID_INFO_FORM]);
-                    }),
-                    info_button_row = $('<div></div>').append(info_ok_button),
-                    info_form_container = $('<div></div>')
-                    .attr('id', ID_INFO_FORM)
-                    .attr('class', ID_INFO_FORM)
-                    .append(info_message_row)
-                    .append(info_button_row);
-            // ---
-            $(form_fader)
-                    .append(info_form_container);
+                // ---
+                info_message_row = $('<div></div>')
+                .attr({
+                    'name': NAME_INFO_FORM_MESSAGE_FIELD,
+                    'class': NAME_INFO_FORM_MESSAGE_FIELD
+                }),
+                info_ok_button = $('<button></button>')
+                .attr({'class': "ok_button"})
+                .text("Ok")
+                .bind('click.' + PLUGIN_NAME, function (e) {
+                    e.preventDefault();
+                    forms.hide_fader.apply($card_input_form, [ID_INFO_FORM]);
+                }),
+                info_button_row = $('<div></div>').append(info_ok_button),
+                info_form_container = $('<div></div>')
+                .attr('id', ID_INFO_FORM)
+                .attr('class', ID_INFO_FORM)
+                .append(info_message_row)
+                .append(info_button_row);
 
-            var
-                    $info_form = $('#' + ID_INFO_FORM),
-                    $info_form_message_field = $('.message', $info_form);
+            $(form_fader).append(info_form_container);
+
+            var $info_form = $('#' + ID_INFO_FORM),
+                $info_form_message_field = $('.message', $info_form);
 
             fields.message = $info_form_message_field;
+            
             forms.show_function.info_form = function () {
 
                 var data = plugin_init_data;
@@ -1812,14 +1807,22 @@ jQuery.extend({
          * @returns {string} название платежной системы
          */
         get_current_ps_name: function () {
-            return $(plugin_init_data[PLUGIN_NAME].input_form).find('input#' + ID_PS_HIDDEN_NAME).val();
+            var hash = window.location.hash;
+            var simple_ps_name = $('[data-id="' + hash + '"]').find('.js_payment_system_item:first').find('.js_hidden_ps_name').html();
+            var bankcard_ps_name = $('[data-id="' + hash + '"]').find('.js_hidden_ps_name').html();
+            
+            if(typeof simple_ps_name == 'undefined'){
+                return bankcard_ps_name;
+            } else {
+                return simple_ps_name;
+            }
         },
         /*
          * Получить название текущей ПС
          * @returns {string} название платежной системы
          */
         get_ps_additional_fields_by_ps_name: function (ps_name) {
-            return $('.js_ps_additional_field.is_active.' + ps_name + ' input');
+            return $('.js_ps_additional_field.' + COMMON_PAYMENT_FORM_ACTIVE_CLASS + '.' + ps_name + ' input');
         },
         /*
          * Проверяем элемент на видимость. Если он не видим - то проверим на бекэнде
@@ -1911,6 +1914,10 @@ jQuery.extend({
             $('.js_tab_catgories').find('li a').on('click', function () {
                 $('body').removeClass('is_open_menu');
             });
+            
+            // Показать / скрыто дополнительные поля ПС
+            $('.js_ps_additional_field').removeClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
+            $('.js_ps_additional_field.' + methods.get_current_ps_name()).addClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
 
             methods.select_simple_payment_system.apply(active_simple_ps);
         },
@@ -1937,17 +1944,13 @@ jQuery.extend({
         /**
          * Изменение суммы, валюты при выборе ПС. Отображение до полей.
          */
-        select_simple_payment_system: function () {
+        select_simple_payment_system: function () {            
             var active_ps = this;
             var visible_ps_name = $(active_ps).find('.js_hidden_ps_name').html();
             var total_amount_currency = $(active_ps).find('.js_inner_ps_price').html();
 
             $('.js_payment_system_item').removeClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
             $(active_ps).addClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
-
-            // Показать / скрыто дополнительные поля ПС
-            $('.js_ps_additional_field').removeClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
-            $('.js_ps_additional_field.' + visible_ps_name).addClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
 
             // Изменение итоговой стоимость внутри страницы
             $('.js_checkout').find('.price').html(total_amount_currency);

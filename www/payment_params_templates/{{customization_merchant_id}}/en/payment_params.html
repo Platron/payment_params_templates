@@ -83,10 +83,11 @@
                         <!--/CATEGORY-->
                     </ul>
                     <!--CONTAINER_BANKCARD-->
-                    <div class="container js_tab_content" id="card_input_form" data-id="#{{category_alias}}">
+                    <div class="container js_tab_content" data-id="#{{category_alias}}" id="card_input_form">
                         <h3 class="title"><span class="ico ico_lock"></span>Secure bank card payment</h3>
                         <form id="bank_form">
                             <input type='hidden' value='{{ps_name}}' id='ps_name'>
+                            <div class="js_hidden_ps_name">{{ps_name}}</div>
                             <div class="form form_card"> 
                                 <div class="bg_card"></div>
                                 <div class="bg_card bg_card_cvv"></div>
@@ -180,7 +181,7 @@
                                     <div class="form_text form_text_nowrap">For tracking of the status of payment</div>
                                 </div>
                                 <!--PS_ADDITIONAL_FIELD-->
-                                <div class="form_item js_ps_additional_field">
+                                <div class="form_item js_ps_additional_field {{ps_name}}">
                                     <div class="form_label">{{param_name}}</div>
                                     <div class="form_field">
                                         <input type="text" name="{{param_id}}" placeholder="{{param_placeholder}}" pattern="{{reg_exp}}" data-is-required="{{is_required}}" value="{{param_value}}">
@@ -228,10 +229,10 @@
                                     <input type='hidden' value='{{ps_name}}' id='ps_name'>
                                     <!--NOT_BANKCARD_PAYMENT_SYSTEM-->
                                     <div class="payment_item js_payment_system_item">
-                                        <div class="js_hidden_ps_name">{{payment_system_name}}</div>
+                                        <div class="js_hidden_ps_name">{{ps_name}}</div>
                                         <div class="payment_ico">
                                             <span class="ico">
-                                                <img src="/images/svg/payment_systems/{{payment_system_name}}.svg" alt="img">
+                                                <img src="/images/svg/payment_systems/{{ps_name}}.svg" alt="img">
                                             </span>
                                         </div>
                                         <div class="price js_inner_ps_price">
@@ -259,7 +260,7 @@
                                 </div>
 
                                 <!--PS_ADDITIONAL_FIELD-->
-                                <div class="form_item ps_additional_field form_item js_ps_additional_field {{payment_system_name}}">
+                                <div class="form_item ps_additional_field form_item js_ps_additional_field {{ps_name}}">
                                     <div class="js_form_item_ps_additional">
                                         <div class="form_label">{{param_name}}</div>
                                         <div class="form_field">
