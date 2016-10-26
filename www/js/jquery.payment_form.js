@@ -904,6 +904,7 @@ jQuery.extend({
         },
         redirect: function (reply) {
             window.open(reply.url, reply.type);
+            tick.set(false);
             return this;
         },
         wait: function (reply) {
@@ -1594,9 +1595,10 @@ jQuery.extend({
 
             (function tickFunction()
             {
-                if (tick.get())
+                if (tick.get()){
                     methods.get_action.apply($loader_form);
-
+                }
+                
                 setTimeout(tickFunction, LOADER_REFERSH_ACTION_TIMEOUT * 1000);
             })();
 
