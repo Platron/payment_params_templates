@@ -87,8 +87,8 @@ jQuery.extend({
     var
         cb_urls = {
             'action_url': 'payment_cb/get_action.php',
-            'check_card_data_url': 'payment_cb/check_card_data_payment.php',
-            'check_simple_data_url': 'payment_cb/check_simple_data_payment.php',
+            'check_card_data_url': 'payment_cb/check_simple_data_payment.php?scenario=card',
+            'check_simple_data_url': 'payment_cb/check_simple_data_payment.php?scenario=simple',
         },
         customer = undefined,
         key = undefined,
@@ -139,7 +139,7 @@ jQuery.extend({
         'exp_date_type': undefined,
         'name_on_card': undefined,
         'card_cvc': undefined,
-        'phone': undefined,
+        'user_phone': undefined,
         'phone_field_lengths': [],
         'email': undefined,
         'ps_additional_fields': undefined
@@ -190,9 +190,9 @@ jQuery.extend({
                 console.log('name_on_card: status ok');
                 fields.card_cvc.removeClass("field_error").addClass("field_ok");
             },
-            phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                console.log('phone: status ok');
-                fields.phone.removeClass("field_error").addClass("field_ok");
+            user_phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                console.log('user_phone: status ok');
+                fields.user_phone.removeClass("field_error").addClass("field_ok");
             },
             email: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
                 console.log('email: status ok');
@@ -210,6 +210,7 @@ jQuery.extend({
     error_setter = {
         form: function (data, text, forms, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
             console.log('from: status error');
+			var data = plugin_init_data;
             data['info_form'].removeClass("field_ok").addClass("field_error");
             fields.message.text(text);
             forms.show_form.apply(this, [ID_INFO_FORM]);
@@ -242,9 +243,9 @@ jQuery.extend({
             console.log('card_cvc: status error');
             fields.card_cvc.removeClass("field_ok").addClass("field_error");
         },
-        phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-            console.log('phone: status error');
-            fields.phone.removeClass("field_ok").addClass("field_error");
+        user_phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('user_phone: status error');
+            fields.user_phone.removeClass("field_ok").addClass("field_error");
         },
         email: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
             console.log('email: status error');
@@ -295,9 +296,9 @@ jQuery.extend({
             console.log('card_cvc: status nothing');
             fields.card_cvc.removeClass("field_ok").removeClass("field_error");
         },
-        phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-            console.log('phone: status nothing');
-            fields.phone.removeClass("field_ok").removeClass("field_error");
+        user_phone: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+            console.log('user_phone: status nothing');
+            fields.user_phone.removeClass("field_ok").removeClass("field_error");
         },
         email: function (fields, validators, settings, ok_setter, error_setter, nothing_setter) {
             console.log('email: status nothing');
@@ -356,7 +357,7 @@ jQuery.extend({
                             && !validators.email(notCardFormParams.email, settings))
                         arrErrors[NAME_INPUT_FORM_EMAIL_FIELD] = 'Email введен неверно';
 
-                    if (!validators.phone(notCardFormParams.phone, settings))
+                    if (!validators.user_phone(notCardFormParams.user_phone, settings))
                         arrErrors[NAME_INPUT_FORM_PHONE_FIELD] = 'Телефон введен неверно';
 
                     if (notCardFormParams.ps_additional_fields) {
@@ -463,7 +464,7 @@ jQuery.extend({
                  * @param {string} phone
                  * @returns {Boolean}
                  */
-                phone: function (phone, settings) {
+                user_phone: function (phone, settings) {
                     phone = phone.replace(/[^0-9]/g, "");
                     if(phone.length > settings.max_phone_length || phone.length < settings.min_phone_length)
                         return false;
@@ -816,17 +817,17 @@ jQuery.extend({
                         nothing_setter.card_cvc.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
                 },
                 // обработка номера телефона
-                phone: function (e, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
+                user_phone: function (e, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
                     var value = this.value = this.value.replace(/[^0-9]/g, "");
 
                     if (value.length >= settings.min_phone_length){
-                        if (validators.phone(value, settings))
-                            ok_setter.phone.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
+                        if (validators.user_phone(value, settings))
+                            ok_setter.user_phone.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
                         else
-                            error_setter.phone.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
+                            error_setter.user_phone.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
                     }
                     else
-                        nothing_setter.phone.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
+                        nothing_setter.user_phone.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
                 },
                 // обработка email для оповещения
                 email: function (e, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
@@ -1059,8 +1060,8 @@ jQuery.extend({
             var arr = {},
                     fields = plugin_init_data[PLUGIN_NAME].fields;
 
-            if (typeof fields.phone !== 'undefined') {
-                arr.phone = fields.phone.val();
+            if (typeof fields.user_phone !== 'undefined') {
+                arr.user_phone = fields.user_phone.val();
             }
 
             if (fields.email.val() !== 'undefined')
@@ -1117,7 +1118,7 @@ jQuery.extend({
         handle_simple_form_data_errors: function (arr_fields) {
             var fields = plugin_init_data[PLUGIN_NAME].fields;
             if (arr_fields[NAME_INPUT_FORM_PHONE_FIELD])
-                error_setter.phone.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
+                error_setter.user_phone.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
 
             if (arr_fields[NAME_INPUT_FORM_EMAIL_FIELD])
                 error_setter.email.apply(this, [fields, validators, settings, ok_setter, error_setter, nothing_setter]);
@@ -1349,16 +1350,16 @@ jQuery.extend({
          */
         init_simple_input_form: function () {
             var $input_form = this;
-            fields.phone = $("input[name^=" + NAME_INPUT_FORM_PHONE_FIELD + "]", $input_form);
+            fields.user_phone = $("input[name^=" + NAME_INPUT_FORM_PHONE_FIELD + "]", $input_form);
 
-            if (fields.phone.length === 1) {
+            if (fields.user_phone.length === 1) {
 
-                fields.phone
+                fields.user_phone
                         .on('keyup focus',
                                 function (e) {
                                     e.preventDefault();
                                     methods.set_plugin_name.apply(this);
-                                    handlers.phone.apply(this, [e, plugin_init_data[PLUGIN_NAME].fields, validators, plugin_init_data[PLUGIN_NAME].settings, ok_setter, error_setter, nothing_setter]);
+                                    handlers.user_phone.apply(this, [e, plugin_init_data[PLUGIN_NAME].fields, validators, plugin_init_data[PLUGIN_NAME].settings, ok_setter, error_setter, nothing_setter]);
                                 });
             }
             else
@@ -1808,7 +1809,7 @@ jQuery.extend({
          */
         get_current_ps_name: function () {
             var hash = window.location.hash;
-            var simple_ps_name = $('[data-id="' + hash + '"]').find('.js_payment_system_item:first').find('.js_hidden_ps_name').html();
+            var simple_ps_name = $('[data-id="' + hash + '"]').find('.js_payment_system_item.'+COMMON_PAYMENT_FORM_ACTIVE_CLASS).find('.js_hidden_ps_name').html();
             var bankcard_ps_name = $('[data-id="' + hash + '"]').find('.js_hidden_ps_name').html();
             
             if(typeof simple_ps_name == 'undefined'){
@@ -1914,12 +1915,12 @@ jQuery.extend({
             $('.js_tab_catgories').find('li a').on('click', function () {
                 $('body').removeClass('is_open_menu');
             });
-            
-            // Показать / скрыто дополнительные поля ПС
-            $('.js_ps_additional_field').removeClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
-            $('.js_ps_additional_field.' + methods.get_current_ps_name()).addClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
 
-            methods.select_simple_payment_system.apply(active_simple_ps);
+            if(active_simple_ps.length){
+                methods.select_simple_payment_system.apply(active_simple_ps);
+            } else {
+                methods.show_hide_ps_additional_fields();
+            }
         },
         /**
          * Отображение информации при клике на знак вопроса на картинке
@@ -1938,9 +1939,16 @@ jQuery.extend({
             else {
                 parent.toggleClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
             }
-
+            
             event.stopPropagation();
-        },
+        },      
+        /**
+         * Показать скрыть дополнительные поля ПС
+         */
+        show_hide_ps_additional_fields: function () {
+            $('.js_ps_additional_field').removeClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
+            $('.js_ps_additional_field.' + methods.get_current_ps_name()).addClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
+        },        
         /**
          * Изменение суммы, валюты при выборе ПС. Отображение до полей.
          */
@@ -1951,12 +1959,14 @@ jQuery.extend({
 
             $('.js_payment_system_item').removeClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
             $(active_ps).addClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
-
+            
             // Изменение итоговой стоимость внутри страницы
             $('.js_checkout').find('.price').html(total_amount_currency);
 
             // Установка платежной системы для сабмита формы
             $(active_ps).parent('.js_payment_in').find('input').val(visible_ps_name);
+
+            methods.show_hide_ps_additional_fields();
         },
         /**
          * Отображение информации при клике на знак вопроса на картинке
