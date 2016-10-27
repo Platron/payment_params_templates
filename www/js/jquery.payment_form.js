@@ -878,6 +878,7 @@ jQuery.extend({
         },
         reload: function (reply) {
             window.location.reload(true);
+            tick.set(false);
             return this;
         },
         show_form: function (reply) {
