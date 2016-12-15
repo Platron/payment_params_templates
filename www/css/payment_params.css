@@ -1,4 +1,4 @@
-@import url("http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,cyrillic-ext");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,cyrillic-ext");
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; vertical-align: baseline; }
 
 body, html { height: 100%; }
@@ -102,7 +102,8 @@ body a { text-decoration: none; -moz-transition: all 0.1s linear; -o-transition:
 .order .order_in.is_active .order_more { display: none; }
 .order .order_in.is_active .order_close { display: block; }
 .order .order_in.is_active .order_text { padding-right: 0; white-space: normal; }
-.order .order_title { font-weight: 600; font-size: 14px; color: #666666; line-height: 20px; }
+.order .order_title { font-weight: 600; font-size: 14px; color: #666666; line-height: 20px; overflow: hidden; height: 20px;}
+.order .order_title_full { height: 100%; }
 .order .order_row { *zoom: 1; }
 .order .order_row:after { content: " "; display: table; clear: both; }
 .order .order_left { float: left; width: 133px; }
@@ -114,7 +115,7 @@ body a { text-decoration: none; -moz-transition: all 0.1s linear; -o-transition:
 @media only screen and (max-width: 800px) { .order .order_text { padding-right: 95px; } }
 .order .order_more, .order .order_close { color: #00c7f4; line-height: 12px; text-decoration: none; border-bottom: 1px solid #00c7f4; text-shadow: 1px 0px 0px white, -1px 0px 0px white; display: inline-block; }
 .order .order_more:hover, .order .order_close:hover { border-color: transparent; }
-.order .order_more { position: absolute; top: 57px; right: 36px; background: white; }
+.order .order_more { position: absolute; top: 57px; right: 10px; background: white; }
 .order .order_more:before { position: absolute; content: ""; width: 6px; height: 100%; left: -6px; top: 1px; background: white; }
 .order .order_close { position: absolute; right: 20px; bottom: 17px; display: none; }
 .order .order_price img {
