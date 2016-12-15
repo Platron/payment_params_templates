@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var MAX_DESCRIPTION_LENGHT = 50;
-    var MAX_MERCHANT_LENGHT = 30;
+    var MAX_MERCHANT_LENGHT = 50;
 
     /**
      * Отображение / скрытие полного описания заказа при нажатии на кнопку
