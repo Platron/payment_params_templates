@@ -121,6 +121,7 @@ body a { text-decoration: none; -moz-transition: all 0.1s linear; -o-transition:
 .order .order_price img {
 	display: inline-block;
 	height: 10px;
+        margin-top: 5px;
 }
 
 
