@@ -70,9 +70,9 @@ $(document).ready(function() {
 			* @param {string} phone
 			* @returns {Boolean}
 			*/
-		   phone : function( phone, settings ) {
-			   return (/^[0-9+]+/.test(phone));
-		   },
+			phone : function( phone, settings ) {
+				return (/^[0-9+]+/.test(phone));
+			},
 
 			/**
 			 * Проверка email для оповещения
