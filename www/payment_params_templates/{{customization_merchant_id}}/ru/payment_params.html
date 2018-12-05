@@ -6,12 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="format-detection" content="telephone=no">
 
-        <link rel="stylesheet" media="all" href="/css/payment_params.css" >        
+        <link rel="stylesheet" media="all" href="/css/payment_params.css" >
+        <link rel="stylesheet" media="all" href="/css/applepay/style.css" >
         <!--<link rel="stylesheet" media="all" href="/payment_params_templates/{{customization_merchant_id}}/css/your.css" >-->
 
         <script type="text/javascript" src="/js/jquery.js"></script>
         <script type="text/javascript" src="/js/jquery-ui.js"></script>
 
+        <script type="text/javascript" src="/js/applepay/applepay.js"></script>
         <script type="text/javascript" src="/js/jquery.payment_form.js"></script>
         <script type="text/javascript" src="/js/header.js"></script>
 
@@ -308,6 +310,9 @@
                                     <!--/DIFFERENT_CURRENCY-->
                                 </div>
                                 <button class="btn btn_green" type="submit"><span>Перейти к оплате</span></button>
+                                <!--APPLEPAY_DATA-->
+                                <div class="js_applepay_data" style="display:none;">{{ps_applepay_data}}</div>
+                                <!--/APPLEPAY_DATA-->
                             </div>
                         </form>
                     </div>
