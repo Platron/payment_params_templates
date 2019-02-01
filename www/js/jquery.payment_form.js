@@ -1880,6 +1880,11 @@ jQuery.extend({
                 $('body').toggleClass('is_open_menu');
             });
 
+            $('.js_payment_button').on('click', function() {
+                var offerCheckbox = $(this).parent().siblings('.offer_checkbox_container').find('input[type=checkbox]');
+                return offerCheckbox.prop('checked');
+            });
+
             $(document).ready(function () {
                 methods.load_postpone_form();
                 methods.load_tabs();
