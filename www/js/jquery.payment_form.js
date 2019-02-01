@@ -74,7 +74,54 @@ jQuery.extend({
      */
     COMMON_PAYMENT_FORM_ACTIVE_CLASS = 'is_active';
     MAX_DESCRIPTION_LENGHT = 50;
+	
+	
+	
+	/** Текстовое обозначения действия reload */
+	ACTION_RELOAD = 'reload';
+	/** Текстовое обозначения действия redirect */
+	ACTION_REDIRECT = 'redirect';
+	/** Кол-во секунд на которое блокируем кнопки отправки формы */
+	SUBMIT_BUTTON_DISABLE_INTERVAL = 5;
+	
+	/** Доступность оплаты через Apple Pay */
+	IS_APPLEPAY_AVAILABLE = window.ApplePaySession && ApplePaySession.canMakePayments;
+	/** Hash для вкладки с пс applepay */
+	HASH_OF_TAB_WITH_APPLEPAY = '#applepay';
+	/** Строка котурую содержат все пс applepay */
+	STRING_THAT_APPLEPAY_PS_NAME_CONTAINS = 'APPLEPAY';
 
+	/**
+	 * Делает недоступными кнопки отправки формы на указанное кол-во секунд
+	 * 
+	 * @param int intervalInSeconds Кол-во секунд на которое блокируем кнопки
+	 * @returns null
+	 */
+	var disableSubmitButtonsByInterval = function(intervalInSeconds) {
+		$('[type=submit]').prop('disabled', true);
+		var intervalInMilliSeconds = intervalInSeconds * 1000;
+		if (intervalInMilliSeconds) {
+			setTimeout(enableSubmitButtons, intervalInMilliSeconds);
+		}
+	};
+	/**
+	 * Делает доступными кнопки отправки формы
+	 * 
+	 * @returns null
+	 */
+	var enableSubmitButtons = function() {
+		$('[type=submit]').prop('disabled', false);
+	};
+	/**
+	 * Проверяет, позволет ли указанное действие разблокировать кнопки
+	 * 
+	 * @param string action Текстовое обозначение действия
+	 * @returns {Boolean}
+	 */
+	var isProperActionForEnableSubmitButtons = function(action) {
+		return !([ACTION_REDIRECT, ACTION_RELOAD].indexOf(action) !== -1);
+	};
+	
 
     /*
      * Опера не можеть работать со вставкой данных из буфера обмена. Поэтому для
@@ -86,9 +133,9 @@ jQuery.extend({
 
     var
         cb_urls = {
-            'action_url': 'payment_cb/get_action.php',
-            'check_card_data_url': 'payment_cb/check_simple_data_payment.php?scenario=card',
-            'check_simple_data_url': 'payment_cb/check_simple_data_payment.php?scenario=simple',
+            'action_url': 'payment_cb/waiter_action.php',
+            'check_card_data_url': 'payment_cb/wizard_action.php?scenario=card',
+            'check_simple_data_url': 'payment_cb/wizard_action.php?scenario=simple',
         },
         customer = undefined,
         key = undefined,
@@ -1256,7 +1303,7 @@ jQuery.extend({
          */
         get_accepted_card_brands: function () {
             if ($(this).find('span.accepted_card_brands')) {
-                return {'accepted_card_brands': $(this).find('input#accepted_card_brands').val()};
+                return {'accepted_card_brands': $(this).find('input.js_accepted_card_brands:first').val()};
             }
             else
                 return {};
@@ -1739,6 +1786,7 @@ jQuery.extend({
                 arrMergeParams = $.extend(arrCardFormParams, arrNotCardFormParams);
                 arrMergeParams.ps_name = methods.get_current_ps_name();
                 arrMergeParams.customer = customer;
+				arrMergeParams.wizard_token = methods.get_wizard_token();
 
                 // Посылаем на бекэнд дополнительные ланные ПС в сгруппированном виде
                 if (arrNotCardFormParams.ps_additional_fields) {
@@ -1747,10 +1795,14 @@ jQuery.extend({
                     });
                 }
 
+				disableSubmitButtonsByInterval(SUBMIT_BUTTON_DISABLE_INTERVAL);
                 $.postJSON(
                         cb_urls.check_card_data_url,
                         arrMergeParams,
                         function (data, textStatus) {
+							if (isProperActionForEnableSubmitButtons(data.action)) {
+								enableSubmitButtons();
+							}
                             if ('success' != textStatus) {
                                 methods.display_error('can not check card data');
                                 return;
@@ -1778,6 +1830,7 @@ jQuery.extend({
 
                 arrNotCardFormParams.ps_name = methods.get_current_ps_name();
                 arrNotCardFormParams.customer = customer;
+				arrNotCardFormParams.wizard_token = methods.get_wizard_token();
 
                 // Посылаем на бекэнд дополнительные ланные ПС в сгруппированном виде
                 if (arrNotCardFormParams.ps_additional_fields) {
@@ -1785,11 +1838,15 @@ jQuery.extend({
                         arrNotCardFormParams.ps_additional_fields[name] = value.value;
                     });
                 }
-
+				
+				disableSubmitButtonsByInterval(SUBMIT_BUTTON_DISABLE_INTERVAL);
                 $.postJSON(
                         cb_urls.check_simple_data_url,
                         arrNotCardFormParams,
                         function (data, textStatus) {
+							if (isProperActionForEnableSubmitButtons(data.action)) {
+								enableSubmitButtons();
+							}
                             if ('success' != textStatus) {
                                 methods.display_error('can not check card data');
                                 return;
@@ -1812,15 +1869,29 @@ jQuery.extend({
          */
         get_current_ps_name: function () {
             var hash = window.location.hash;
-            var simple_ps_name = $('[data-id="' + hash + '"]').find('.js_payment_system_item.'+COMMON_PAYMENT_FORM_ACTIVE_CLASS).find('.js_hidden_ps_name').html();
-            var bankcard_ps_name = $('[data-id="' + hash + '"]').find('.js_hidden_ps_name').html();
+            var simple_ps_name = $('[data-id="' + hash + '"]').find('.js_payment_system_item.'+COMMON_PAYMENT_FORM_ACTIVE_CLASS).find('.js_hidden_ps_name').text();
+            var bankcard_ps_name = $('[data-id="' + hash + '"]').find('.js_hidden_ps_name').text();
             
-            if(typeof simple_ps_name == 'undefined'){
-                return bankcard_ps_name;
-            } else {
-                return simple_ps_name;
-            }
+			if (simple_ps_name) {
+				return simple_ps_name;
+			}
+			
+			return bankcard_ps_name;
         },
+		
+		/**
+		 * Возвращает токен текущей страницы
+		 * @returns {string}
+		 */
+		get_wizard_token: function() {
+			var token = $('.js_hidden_wizard_token').text();
+			if (typeof token == 'undefined') {
+				return '';
+			}
+			
+			return token;
+		},
+		
         /*
          * Получить название текущей ПС
          * @returns {string} название платежной системы
@@ -1880,10 +1951,45 @@ jQuery.extend({
                 $('body').toggleClass('is_open_menu');
             });
 
+            $('.js_payment_button').on('click', function() {
+                var offerCheckbox = $(this).parent().siblings('.offer_checkbox_container').children('input[type=checkbox]');
+                return offerCheckbox.prop('checked');
+            });
+
             $(document).ready(function () {
                 methods.load_postpone_form();
+                methods.prepare_applepay_tab();
                 methods.load_tabs();
             });
+        },
+        prepare_applepay_tab: function() {
+            var applepayTab = $('div.js_tab_content[data-id='+HASH_OF_TAB_WITH_APPLEPAY+']');
+            // Hide needless fields
+            applepayTab.children('.js_not_card_form').children().each(function(index){
+                if (!$(this).hasClass('js_checkout') && !$(this).hasClass('offer_checkbox_container')) {
+                    $(this).hide();
+                }
+            });
+            // Replace pay button
+            var applepayButton = $('<div/>', {
+                id: 'apple-pay-button',
+                class: 'apple-pay-button btn visible',
+                click: function() {
+                    applePayButtonClicked(customer, applepayTab.find('input.js_ps_name').val(), JSON.parse(applepayTab.find('div.js_applepay_data').text()));
+                }
+            });
+            applepayTab.find('.js_payment_button').replaceWith(applepayButton);
+
+            var tabsItemsWithApplePay = $('.js_tab_catgories a').filter(function(index, element){
+                return $(element).attr('href') === HASH_OF_TAB_WITH_APPLEPAY;
+            });
+            if (IS_APPLEPAY_AVAILABLE) {
+                if (tabsItemsWithApplePay.length > 0) {
+                    window.location.hash = HASH_OF_TAB_WITH_APPLEPAY;
+                }
+            } else {
+                tabsItemsWithApplePay.parent().remove();
+            }
         },
         /**
          * Обработка нажатия на вкладку и смену группы + изменение суммы во вкладке
@@ -1899,18 +2005,32 @@ jQuery.extend({
                 $('[href="' + hash + '"]').parents('.js_tab_catgories').find('li').removeClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
                 $('[href="' + hash + '"]').parent().addClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
 
-                active_simple_ps = $('[data-id="' + hash + '"]').find('.js_payment_system_item:first');
+				var applepay_ps_button;
+				if (IS_APPLEPAY_AVAILABLE) {
+					var simple_ps_buttons = $('[data-id="' + hash + '"]').find('.js_payment_system_item');
+					applepay_ps_button = simple_ps_buttons.filter(function (index, element) {
+					  var hidden_element = $(element).find('div.js_hidden_ps_name');
+					  return hidden_element.text().indexOf(STRING_THAT_APPLEPAY_PS_NAME_CONTAINS) !== -1;
+					});
+				}
+				
+				if (applepay_ps_button && applepay_ps_button.length > 0) {
+					active_simple_ps = $(applepay_ps_button[0]);
+				} else {
+					active_simple_ps = $('[data-id="' + hash + '"]').find('.js_payment_system_item:first');
+				}
                 tabText = $('.js_tab_catgories').find('li.' + COMMON_PAYMENT_FORM_ACTIVE_CLASS + ' a').text();
                 $('.js_selected_tab_name').text(tabText);
             }
             else {
                 $('.js_tab_catgories').find('li').removeClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
                 $('.js_tab').find('.js_tab_content').removeClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
-                
-                window.location.hash = $('.js_tab_catgories').find('li:first a').attr('href');
+
+                var firstVisibleCategoryButton = $('.js_tab_catgories').find('li:first');
+                window.location.hash = firstVisibleCategoryButton.find('a').attr('href');
                 
                 active_simple_ps = $('.js_tab').find('.js_tab_content:first').find('.js_payment_system_item');
-                tabText = $('.js_tab_catgories').find('li:first a').text();
+                tabText = firstVisibleCategoryButton.find('a').text();
                 $('.js_selected_tab_name').text(tabText);
             }
 

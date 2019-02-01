@@ -92,7 +92,7 @@
                     <div class="container js_tab_content" data-id="#{{category_alias}}" id="card_input_form">
                         <h3 class="title"><span class="ico ico_lock"></span>Secure bank card payment</h3>
                         <form id="bank_form">
-                            <input type='hidden' value='{{ps_name}}' id='ps_name'>
+                            <input type='hidden' value='{{ps_name}}' class='js_ps_name'>
                             <div class="js_hidden_ps_name">{{ps_name}}</div>
                             <div class="form form_card"> 
                                 <div class="bg_card"></div>
@@ -171,7 +171,7 @@
                                     <li><i class="ico" title="{{card_type_long}}"><img class="ico ico_mps" src="/images/svg/mps/{{card_type_long}}.svg" alt="{{card_type_long}}"></i></li>
                                     <!--/CARD_TYPES-->
                                 </ul>
-                                <input type="hidden" value="{{accepted_card_brands}}" id="accepted_card_brands">
+                                <input type="hidden" value="{{accepted_card_brands}}" class="js_accepted_card_brands">
                             </div>
 
                             <div class="form form_wrap">
@@ -199,8 +199,8 @@
                                 <!--/PS_ADDITIONAL_FIELD-->
                             </div>
 
-                            <label class="checkbox js_email_checkbox" for="checkbox">
-                                <input class="js_email_send_checkbox" id="checkbox" type="checkbox">
+                            <label class="checkbox js_email_checkbox">
+                                <input class="js_email_send_checkbox" type="checkbox">
                                 <span>Send information on payment to my e-mail</span>
                             </label>
 
@@ -234,7 +234,7 @@
                         <form class="js_not_card_form">
                             <div class="payment js_payment_systems">
                                 <div class="payment_in js_payment_in">
-                                    <input type='hidden' value='{{ps_name}}' id='ps_name'>
+                                    <input type='hidden' value='{{ps_name}}' class='js_ps_name'>
                                     <!--NOT_BANKCARD_PAYMENT_SYSTEM-->
                                     <div class="payment_item js_payment_system_item">
                                         <div class="js_hidden_ps_name">{{ps_name}}</div>
