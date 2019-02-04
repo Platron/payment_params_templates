@@ -1952,7 +1952,7 @@ jQuery.extend({
             });
 
             $('.js_payment_button').on('click', function() {
-                var offerCheckbox = $(this).parent().siblings('.offer_checkbox_container').children('input[type=checkbox]');
+                var offerCheckbox = $(this).parent().siblings('.offer_checkbox_container').find('input[type=checkbox]');
                 return offerCheckbox.prop('checked');
             });
 
