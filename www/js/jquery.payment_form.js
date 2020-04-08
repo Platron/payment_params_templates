@@ -2147,6 +2147,12 @@ jQuery.extend({
      * Входная точка в плагин. Она вызывается из платежных страниц
      */
     $.fn.payment_form = function (method) {
+        window.addEventListener("hashchange", function(){
+            if(!window.location.hash){
+                window.history.back();
+            }
+        });
+        
         methods.set_plugin_name.apply(this);
         if (methods[method]) {
             var _return = methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
