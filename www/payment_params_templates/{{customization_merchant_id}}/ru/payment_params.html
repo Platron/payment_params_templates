@@ -9,6 +9,7 @@
         <link rel="stylesheet" media="all" href="/css/payment_params.css?asset_version={{asset_version}}" >
         <link rel="stylesheet" media="all" href="/css/applepay/style.css?asset_version={{asset_version}}" >
         <!--<link rel="stylesheet" media="all" href="/payment_params_templates/{{customization_merchant_id}}/css/your.css?asset_version={{asset_version}}" >-->
+        <!--ONLY_IN_FRAME--><link rel="stylesheet" media="all" href="/css/payment_params_iframe.css?asset_version={{asset_version}}" ><!--/ONLY_IN_FRAME-->
 
         <script type="text/javascript" src="/js/jquery.js?asset_version={{asset_version}}"></script>
         <script type="text/javascript" src="/js/jquery-ui.js?asset_version={{asset_version}}"></script>
@@ -18,41 +19,44 @@
         <script type="text/javascript" src="/js/header.js?asset_version={{asset_version}}"></script>
 
         <script src="/bower/bower_components/hideshowpassword/hideShowPassword.js?asset_version={{asset_version}}"></script>
-        <!-- INFO: Если хотите изменить способ отображения ошибок - нужно заменить этот блок блоком из setters.js -->
+
         <script type="text/javascript">
             $(document).ready(function () {
                 $('input[name="card_cvc"]').hidePassword({
                     innerToggle: true,
                     toggle: {
                         attachToEvent: 'mousedown mouseup'
-                    }
+                    },
+                    states: { hidden: { toggle: { attr: { title: 'Показать CVV' } } } }
                 });
-                var pluginParams = {};
-
-                pluginParams.form_type = 'card_form';
+                
                 $('div#card_input_form').each(function () {
-                    $(this).payment_form(pluginParams);
+                    $(this).payment_form({
+                        'form_type': 'card_form'
+                    });
                 });
-                pluginParams.form_type = 'simple_form';
                 $('div#simple_input_form').each(function () {
-                    $(this).payment_form(pluginParams);
+                    $(this).payment_form({
+                        'form_type': 'simple_form'
+                    });
                 });
             });
         </script>
-
     </head>
     <body>
 
         <div class="out out_ind">
-
+            <!--DELETE_IF_USE_IN_FRAME-->
             <header class="header">
                 <div class="header_in">
+
+                    <div class="logos is_active">
+                        <!--MERCHANT_LOGO-->
+                        <img class="logo" src='/logos/{{merchant_logo}}' alt='{{MERCHANT_NAME}}'>
+                        <!--/MERCHANT_LOGO-->
+                    </div>
+
                     <div class="order">
-
-                        <div class="logos is_active">
-                            <!--Сюда можно вставить свой логотип-->
-                        </div>
-
                         <div class="order_in js_header_order_info">
                             <div class="order_title js_header_merchant_name">Заказ в магазине {{MERCHANT_NAME}}</div>
                             <div class="order_row">
@@ -72,6 +76,7 @@
                     <div class="logo_platron"></div>
                 </div>
             </header>
+            <!--/DELETE_IF_USE_IN_FRAME-->
             <noscript><h3 class="title turn_on_js">Для продолжения включите javascript</h3></noscript>
             <!--TESTMODE--><h3 class="title test_mode">Тестовый режим</h3><!--/TESTMODE-->
             <div class="wrapper wrapper_opted">
@@ -83,7 +88,7 @@
 
             <div class="wrapper wrapper_tabs">
                 <div class="tabs js_tab">
-                	<div class="js_hidden_wizard_token" style="display:none;">{{wizard_token}}</div>
+                    <div class="js_hidden_wizard_token" style="display:none;">{{wizard_token}}</div>
                     <ul class="tabs_group js_tab_catgories">
                         <!--CATEGORY-->
                         <li class="tabs_item">
@@ -202,16 +207,18 @@
                                 <!--/PS_ADDITIONAL_FIELD-->
                             </div>
 
-                            <label class="checkbox js_email_checkbox">
-                                <input class="js_email_send_checkbox" type="checkbox">
-                                <span>Прислать на мой e-mail информацию об оплате</span>
-                            </label>
+                            <div style="{{param_should_hide_email}}">
+                                <label class="checkbox js_email_checkbox">
+                                    <input class="js_email_send_checkbox" type="checkbox">
+                                    <span>Прислать на мой e-mail информацию об оплате</span>
+                                </label>
 
-                            <div class="form form_mail js_myemail">
-                                <div class="form_item">
-                                    <div class="form_field">
-                                        <input type="text" class="js_email_input" name="user_contact_email" placeholder="ivanov@gmail.com" value="{{user_contact_email}}">
-                                        <div class="form_text form_text_nowrap">Нужен для отслеживания статуса платежа</div>
+                                <div class="form form_mail js_myemail">
+                                    <div class="form_item">
+                                        <div class="form_field">
+                                            <input type="text" class="js_email_input" name="user_contact_email" placeholder="ivanov@gmail.com" value="{{user_contact_email}}">
+                                            <div class="form_text form_text_nowrap">Нужен для отслеживания статуса платежа</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -279,7 +286,7 @@
                                 </div>
 
                                 <!--PS_ADDITIONAL_FIELD-->
-                                <div class="form_item ps_additional_field form_item js_ps_additional_field {{ps_name}}">
+                                <div class="ps_additional_field js_ps_additional_field {{ps_name}}">
                                     <div class="js_form_item_ps_additional">
                                         <div class="form_label">{{param_name}}</div>
                                         <div class="form_field">
@@ -291,16 +298,18 @@
                                 <!--/PS_ADDITIONAL_FIELD-->
                             </div>
 
-                            <label class="checkbox js_email_checkbox">
-                                <input class="js_email_send_checkbox" type="checkbox">
-                                <span>Прислать на мой e-mail информацию об оплате</span>
-                            </label>
+                            <div style="{{param_should_hide_email}}">
+                                <label class="checkbox js_email_checkbox">
+                                    <input class="js_email_send_checkbox" type="checkbox">
+                                    <span>Прислать на мой e-mail информацию об оплате</span>
+                                </label>
 
-                            <div class="form form_mail js_myemail">
-                                <div class="form_item">
-                                    <div class="form_field">
-                                        <input class="js_email_input" type="text" name="user_contact_email" placeholder="ivanov@gmail.com" value="{{user_contact_email}}">
-                                        <div class="form_text form_text_nowrap">Нужен для отслеживания статуса платежа</div>
+                                <div class="form form_mail js_myemail">
+                                    <div class="form_item">
+                                        <div class="form_field">
+                                            <input class="js_email_input" type="text" name="user_contact_email" placeholder="ivanov@gmail.com" value="{{user_contact_email}}">
+                                            <div class="form_text form_text_nowrap">Нужен для отслеживания статуса платежа</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -336,6 +345,7 @@
             <div class="overlay js_overlay"></div>
         </div>
 
+        <!--DELETE_IF_USE_IN_FRAME-->
         <footer class="footer footer_ind">
             <div class="footer_in">
                 <div class="footer_row">
@@ -348,7 +358,7 @@
                         <div class="support">
                             <div class="support_row">Служба поддержки:</div>
                             <div class="support_row">
-                                <p><strong>+7 (495) 983-32-79</strong> (круглосуточно) <strong class="support_col">support@platron.ru</strong></p>
+                                <p><strong>+7 (495) 228-11-48</strong> (круглосуточно) <strong class="support_col">support@platron.ru</strong></p>
                             </div>
                         </div>
                     </div>
@@ -363,6 +373,7 @@
                 </div>
             </div>
         </footer>
+        <!--/DELETE_IF_USE_IN_FRAME-->
         <!--POSTPONED_PAYMENT-->
         <div class="popup js_popup_postpone">
             <div class="popup_in js_popup_postpone_content">

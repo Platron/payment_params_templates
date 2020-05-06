@@ -5,7 +5,8 @@
         <title>Платрон - универсальная система приема платежей на сайте. Система электронных платежей для интернет магазинов. :: {{_title}}</title>
         <link rel="stylesheet" media="all" href="/css/payment_params.css?asset_version={{asset_version}}" >
         <!--<link rel="stylesheet" media="all" href="/payment_params_templates/{{customization_merchant_id}}/css/your.css?asset_version={{asset_version}}" >-->
-        
+        <!--ONLY_IN_FRAME--><link rel="stylesheet" media="all" href="/css/payment_params_iframe.css?asset_version={{asset_version}}" ><!--/ONLY_IN_FRAME-->
+            
         <script type="text/javascript" src="/js/jquery.js?asset_version={{asset_version}}"></script>
         <script type="text/javascript" src="/js/jquery-ui.js?asset_version={{asset_version}}"></script>
         <script type="text/javascript" src="/js/header.js?asset_version={{asset_version}}"></script>
@@ -26,54 +27,26 @@
                 m.parentNode.insertBefore(a, m)
             })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-            ga('create', 'UA-79130225-1', 'auto');
+            ga('create', 'UA-123155951-1', 'auto');
             ga('send', 'pageview');
         </script>
-
-        <!-- Yandex.Metrika counter -->
-        <script type="text/javascript">
-            (function (d, w, c) {
-                (w[c] = w[c] || []).push(function () {
-                    try {
-                        w.yaCounter37866270 = new Ya.Metrika({
-                            id: 37866270,
-                            clickmap: true,
-                            trackLinks: true,
-                            accurateTrackBounce: true
-                        });
-                    } catch (e) {
-                    }
-                });
-
-                var n = d.getElementsByTagName("script")[0],
-                        s = d.createElement("script"),
-                        f = function () {
-                            n.parentNode.insertBefore(s, n);
-                        };
-                s.type = "text/javascript";
-                s.async = true;
-                s.src = "https://mc.yandex.ru/metrika/watch.js";
-
-                if (w.opera == "[object Opera]") {
-                    d.addEventListener("DOMContentLoaded", f, false);
-                } else {
-                    f();
-                }
-            })(document, window, "yandex_metrika_callbacks");
-        </script>
-        <noscript><div><img src="https://mc.yandex.ru/watch/37866270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-        <!-- /Yandex.Metrika counter -->
         <!--/ANALYTICS-->
 
         <div class="out out_ind">
+            <!--DELETE_IF_USE_IN_FRAME-->
             <header class="header">
                 <div class="header_in">
-                    
+
+                    <!--PAYMENT_CONTEXT-->
                     <div class="logos is_active">
-                        <!--Сюда можно вставить свой логотип. И скопировать весь блок PAYMENT_CONTEXT в шаблон-->
+                        <!--MERCHANT_LOGO-->
+                        <img class="logo" src='/logos/{{merchant_logo}}' alt='{{MERCHANT_NAME}}'>
+                        <!--/MERCHANT_LOGO-->
                     </div>
+                    <!--/PAYMENT_CONTEXT-->
 
                     <div class="order">
+                        <!--PAYMENT_CONTEXT-->
                         <div class="order_in js_header_order_info">
                             <div class="order_title">Merchant {{MERCHANT_NAME}}</div>
                             <div class="order_row">
@@ -89,18 +62,19 @@
                             <a href="#" class="order_more js_header_order_info_more">More</a>
                             <a href="#" class="order_close js_header_order_info_close">Close</a>
                         </div>
+                        <!--/PAYMENT_CONTEXT-->
                     </div>
                     <div class="logo_platron"></div>
                 </div>
             </header>
-
+            <!--/DELETE_IF_USE_IN_FRAME-->
             <div class="wrapper">
                 <div class="center center_mod">
                     {{_content}}
                 </div>
             </div>
         </div>
-
+        <!--DELETE_IF_USE_IN_FRAME-->
         <footer class="footer footer_ind">
             <div class="footer_in">
                 <div class="footer_row">
@@ -108,7 +82,7 @@
                         <div class="support">
                             <div class="support_row">Support:</div>
                             <div class="support_row">
-                                <p><strong>+7 (495) 983-32-79</strong> (round the clock) <strong class="support_col">support@platron.ru</strong></p>
+                                <p><strong>+7 (495) 228-11-48</strong> (round the clock) <strong class="support_col">support@platron.ru</strong></p>
                             </div>
                         </div>
                     </div>
@@ -117,11 +91,12 @@
                     <div class="footer_right">
                         <ul class="security">
                             <li class="security_item"><i class="ico"><img src="/images/icons/comodo.png" alt="img"></i></li>
-                            <li class="security_item"><i class="ico"><a href="/images/pci-dss-certificate.jpg"><img src="/images/icons/pci-dss.png" alt="img"></a></i></li>
+                            <li class="security_item"><i class="ico"><img src="/images/icons/pci-dss.png" alt="img"></i></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </footer>
+        <!--/DELETE_IF_USE_IN_FRAME-->
     </body>
 </html>
