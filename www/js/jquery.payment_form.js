@@ -40,7 +40,7 @@ jQuery.extend({
     LOADER_REFERSH_ACTION_TIMEOUT = 2,
     LOADER_SHOTDOWN_TIMEOUT = 30,
     /*
-     * Поля для формы оплаты 
+     * Поля для формы оплаты
      */
     ID_CARD_INPUT_FORM = 'card_input_form',
     NAME_CARD_INPUT_FORM_CARD_NUM_1_FIELD = 'card_num_1',
@@ -74,26 +74,34 @@ jQuery.extend({
      */
     COMMON_PAYMENT_FORM_ACTIVE_CLASS = 'is_active';
     MAX_DESCRIPTION_LENGHT = 50;
-	
-	
-	
+
+
+
 	/** Текстовое обозначения действия reload */
 	ACTION_RELOAD = 'reload';
 	/** Текстовое обозначения действия redirect */
 	ACTION_REDIRECT = 'redirect';
 	/** Кол-во секунд на которое блокируем кнопки отправки формы */
 	SUBMIT_BUTTON_DISABLE_INTERVAL = 5;
-	
+
+	let pageNotInIframe = window.self === window.top;
 	/** Доступность оплаты через Apple Pay */
-	IS_APPLEPAY_AVAILABLE = window.ApplePaySession && ApplePaySession.canMakePayments;
+	IS_APPLEPAY_AVAILABLE = pageNotInIframe && window.ApplePaySession && ApplePaySession.canMakePayments;
 	/** Hash для вкладки с пс applepay */
 	HASH_OF_TAB_WITH_APPLEPAY = '#applepay';
-	/** Строка котурую содержат все пс applepay */
+	/** Строка которую содержат все пс applepay */
 	STRING_THAT_APPLEPAY_PS_NAME_CONTAINS = 'APPLEPAY';
+
+	/** Доступность оплаты через Google Pay */
+	IS_GOOGLEPAY_AVAILABLE = pageNotInIframe && window.google && window.GooglePay
+	/** Hash для вкладки с пс googlepay */
+	HASH_OF_TAB_WITH_GOOGLEPAY = '#googlepay';
+	/** Строка которую содержат все пс googlepay */
+	STRING_THAT_GOOGLEPAY_PS_NAME_CONTAINS = 'GOOGLEPAY';
 
 	/**
 	 * Делает недоступными кнопки отправки формы на указанное кол-во секунд
-	 * 
+	 *
 	 * @param int intervalInSeconds Кол-во секунд на которое блокируем кнопки
 	 * @returns null
 	 */
@@ -106,7 +114,7 @@ jQuery.extend({
 	};
 	/**
 	 * Делает доступными кнопки отправки формы
-	 * 
+	 *
 	 * @returns null
 	 */
 	var enableSubmitButtons = function() {
@@ -114,14 +122,14 @@ jQuery.extend({
 	};
 	/**
 	 * Проверяет, позволет ли указанное действие разблокировать кнопки
-	 * 
+	 *
 	 * @param string action Текстовое обозначение действия
 	 * @returns {Boolean}
 	 */
 	var isProperActionForEnableSubmitButtons = function(action) {
 		return !([ACTION_REDIRECT, ACTION_RELOAD].indexOf(action) !== -1);
 	};
-	
+
 
     /*
      * Опера не можеть работать со вставкой данных из буфера обмена. Поэтому для
@@ -515,7 +523,7 @@ jQuery.extend({
                     phone = phone.replace(/[^0-9]/g, "");
                     if(phone.length > settings.max_phone_length || phone.length < settings.min_phone_length)
                         return false;
-                    
+
                     return true;
                 },
                 /**
@@ -546,7 +554,7 @@ jQuery.extend({
             handlers = {
                 /**
                  * определение позиции коретки курсора в поле
-                 * 
+                 *
                  * @param {type} node dom объект поля, в которо происходит позиционирование
                  * @param {type} start
                  * @param {type} end
@@ -586,7 +594,7 @@ jQuery.extend({
                         };
                     }
                 },
-                // обработчик нескольких полей ввода номера карты       
+                // обработчик нескольких полей ввода номера карты
                 card_num_fields: function (e, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
                     this.value = this.value.replace(/[^0-9]/g, "");
 
@@ -629,7 +637,7 @@ jQuery.extend({
                 /**
                  * обработчик данных при вставке из буфера обмена
                  * для полей даты истечения срока действия карты
-                 * 
+                 *
                  * @param {type} element
                  * @param {type} options
                  * @returns {undefined}
@@ -706,7 +714,7 @@ jQuery.extend({
                 /**
                  * позиционирование коретки курсора в поле и плавный переход между полями
                  * для полей даты истечения срока действия карты
-                 * 
+                 *
                  * @param {type} e
                  * @returns {undefined}
                  */
@@ -841,7 +849,7 @@ jQuery.extend({
                 },
                 // обработка имени на карте
                 name_on_card: function (e, fields, validators, settings, ok_setter, error_setter, nothing_setter) {
-                    var value = this.value = this.value.replace(/[^A-Za-z -]/g, "");
+                    var value = this.value = this.value.replace(/[^A-Za-z -]|^\s+/g, "");
 
                     if (value.length >= settings.min_name_on_card_length && value.length <= settings.max_name_on_card_length)
                         if (validators.name_on_card(value, settings))
@@ -1115,7 +1123,7 @@ jQuery.extend({
 
             if (fields.email.val() !== 'undefined')
                 arr.email = fields.email.val();
-            
+
             var ps_additional_fields = methods.get_ps_additional_fields_by_ps_name(methods.get_current_ps_name());
             if (!$.isEmptyObject(ps_additional_fields)) {
                 arr.ps_additional_fields = {};
@@ -1346,7 +1354,7 @@ jQuery.extend({
                     if (settings.accepted_card_brands[n] === 'MASTERCARD' || settings.accepted_card_brands[n] === 'MAESTRO' ||
                             settings.accepted_card_brands[n] === 'VISA' || settings.accepted_card_brands[n] === 'VISA ELECTRON' ||
                             settings.accepted_card_brands[n] === 'DINERS CLUB' || settings.accepted_card_brands[n] === 'DISCOVER'
-                            || settings.accepted_card_brands[n] === 'JCB' || settings.accepted_card_brands[n] === 'CHINA UNION PAY' 
+                            || settings.accepted_card_brands[n] === 'JCB' || settings.accepted_card_brands[n] === 'CHINA UNION PAY'
                             || settings.accepted_card_brands[n] === 'MIR' || settings.accepted_card_brands[n] === 'PRO100') {
                         min_card_cvc_length = min_card_cvc_length > 3 || typeof min_card_cvc_length == 'undefined' ? 3 : min_card_cvc_length;
                         max_card_cvc_length = max_card_cvc_length < 3 || typeof max_card_cvc_length == 'undefined' ? 3 : max_card_cvc_length;
@@ -1646,7 +1654,7 @@ jQuery.extend({
                 if (tick.get()){
                     methods.get_action.apply($loader_form);
                 }
-                
+
                 setTimeout(tickFunction, LOADER_REFERSH_ACTION_TIMEOUT * 1000);
             })();
 
@@ -1694,7 +1702,7 @@ jQuery.extend({
                 $info_form_message_field = $('.message', $info_form);
 
             fields.message = $info_form_message_field;
-            
+
             forms.show_function.info_form = function () {
 
                 var data = plugin_init_data;
@@ -1838,7 +1846,7 @@ jQuery.extend({
                         arrNotCardFormParams.ps_additional_fields[name] = value.value;
                     });
                 }
-				
+
 				disableSubmitButtonsByInterval(SUBMIT_BUTTON_DISABLE_INTERVAL);
                 $.postJSON(
                         cb_urls.check_simple_data_url,
@@ -1871,14 +1879,14 @@ jQuery.extend({
             var hash = window.location.hash;
             var simple_ps_name = $('[data-id="' + hash + '"]').find('.js_payment_system_item.'+COMMON_PAYMENT_FORM_ACTIVE_CLASS).find('.js_hidden_ps_name').text();
             var bankcard_ps_name = $('[data-id="' + hash + '"]').find('.js_hidden_ps_name').text();
-            
+
 			if (simple_ps_name) {
 				return simple_ps_name;
 			}
-			
+
 			return bankcard_ps_name;
         },
-		
+
 		/**
 		 * Возвращает токен текущей страницы
 		 * @returns {string}
@@ -1888,10 +1896,10 @@ jQuery.extend({
 			if (typeof token == 'undefined') {
 				return '';
 			}
-			
+
 			return token;
 		},
-		
+
         /*
          * Получить название текущей ПС
          * @returns {string} название платежной системы
@@ -1956,14 +1964,15 @@ jQuery.extend({
                 return offerCheckbox.prop('checked');
             });
 
-            $(document).ready(function () {
+            $(document).ready(async function () {
                 methods.load_postpone_form();
                 methods.prepare_applepay_tab();
+                await methods.prepare_googlepay_tab();
                 methods.load_tabs();
             });
         },
         prepare_applepay_tab: function() {
-            var applepayTab = $('div.js_tab_content[data-id='+HASH_OF_TAB_WITH_APPLEPAY+']');
+            var applepayTab = $('div.js_tab_content[data-id="'+HASH_OF_TAB_WITH_APPLEPAY+'"]');
             // Hide needless fields
             applepayTab.children('.js_not_card_form').children().each(function(index){
                 if (!$(this).hasClass('js_checkout') && !$(this).hasClass('offer_checkbox_container')) {
@@ -1991,6 +2000,46 @@ jQuery.extend({
                 tabsItemsWithApplePay.parent().remove();
             }
         },
+        prepare_googlepay_tab: async function() {
+            var googleTab = $('div.js_tab_content[data-id="'+HASH_OF_TAB_WITH_GOOGLEPAY+'"]');
+            // Hide needless fields
+            googleTab.children('.js_not_card_form').children().each(function(index){
+                if (!$(this).hasClass('js_checkout') && !$(this).hasClass('offer_checkbox_container')) {
+                    $(this).hide();
+                }
+            });
+
+            var tabsItemsWithGooglePay = $('.js_tab_catgories a').filter(function(index, element){
+                return $(element).attr('href') === HASH_OF_TAB_WITH_GOOGLEPAY;
+            });
+
+            if (tabsItemsWithGooglePay.length === 0) {
+                return;
+            }
+            if (!IS_GOOGLEPAY_AVAILABLE) {
+                console.log('GooglePay is not available');
+                // hide google pay tab
+                tabsItemsWithGooglePay.parent().remove();
+                return;
+            }
+
+            let jsonString = googleTab.find('div.js_googlepay_data').text();
+            let googleSettings = jsonString ? JSON.parse(jsonString) : {};
+            let psName = googleTab.find('input.js_ps_name').val();
+            await window.GooglePay.CreateButton(customer, psName, googleSettings)
+                .then(function (button) {
+                    if (button) {
+                        // Replace pay button
+                        googleTab.find('.js_payment_button').replaceWith(button);
+                        if (tabsItemsWithGooglePay.length > 0) {
+                            window.location.hash = HASH_OF_TAB_WITH_GOOGLEPAY;
+                        }
+                    } else {
+                        // hide google pay tab
+                        tabsItemsWithGooglePay.parent().remove();
+                    }
+                });
+        },
         /**
          * Обработка нажатия на вкладку и смену группы + изменение суммы во вкладке
          * Изменение табуляции работает через изменение hash. По нажатии на ссылке изменяется хэш. По нему меняется tab
@@ -2013,9 +2062,20 @@ jQuery.extend({
 					  return hidden_element.text().indexOf(STRING_THAT_APPLEPAY_PS_NAME_CONTAINS) !== -1;
 					});
 				}
-				
+
+				var googlepay_ps_button;
+				if (IS_GOOGLEPAY_AVAILABLE) {
+					var simple_ps_buttons = $('[data-id="' + hash + '"]').find('.js_payment_system_item');
+					googlepay_ps_button = simple_ps_buttons.filter(function (index, element) {
+					  var hidden_element = $(element).find('div.js_hidden_ps_name');
+					  return hidden_element.text().indexOf(STRING_THAT_GOOGLEPAY_PS_NAME_CONTAINS) !== -1;
+					});
+				}
+
 				if (applepay_ps_button && applepay_ps_button.length > 0) {
 					active_simple_ps = $(applepay_ps_button[0]);
+				} else if (googlepay_ps_button && googlepay_ps_button.length > 0) {
+					active_simple_ps = $(googlepay_ps_button[0]);
 				} else {
 					active_simple_ps = $('[data-id="' + hash + '"]').find('.js_payment_system_item:first');
 				}
@@ -2028,7 +2088,7 @@ jQuery.extend({
 
                 var firstVisibleCategoryButton = $('.js_tab_catgories').find('li:first');
                 window.location.hash = firstVisibleCategoryButton.find('a').attr('href');
-                
+
                 active_simple_ps = $('.js_tab').find('.js_tab_content:first').find('.js_payment_system_item');
                 tabText = firstVisibleCategoryButton.find('a').text();
                 $('.js_selected_tab_name').text(tabText);
@@ -2062,27 +2122,27 @@ jQuery.extend({
             else {
                 parent.toggleClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
             }
-            
+
             event.stopPropagation();
-        },      
+        },
         /**
          * Показать скрыть дополнительные поля ПС
          */
         show_hide_ps_additional_fields: function () {
             $('.js_ps_additional_field').removeClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
             $('.js_ps_additional_field.' + methods.get_current_ps_name()).addClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
-        },        
+        },
         /**
          * Изменение суммы, валюты при выборе ПС. Отображение до полей.
          */
-        select_simple_payment_system: function () {            
+        select_simple_payment_system: function () {
             var active_ps = this;
             var visible_ps_name = $(active_ps).find('.js_hidden_ps_name').html();
             var total_amount_currency = $(active_ps).find('.js_inner_ps_price').html();
 
             $('.js_payment_system_item').removeClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
             $(active_ps).addClass(COMMON_PAYMENT_FORM_ACTIVE_CLASS);
-            
+
             // Изменение итоговой стоимость внутри страницы
             $('.js_checkout').find('.price').html(total_amount_currency);
 
@@ -2152,7 +2212,7 @@ jQuery.extend({
                 window.history.back();
             }
         });
-        
+
         methods.set_plugin_name.apply(this);
         if (methods[method]) {
             var _return = methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
