@@ -9,6 +9,7 @@
         <link rel="stylesheet" media="all" href="/css/payment_params.css?asset_version={{asset_version}}" >
         <link rel="stylesheet" media="all" href="/css/applepay/style.css?asset_version={{asset_version}}" >
         <link rel="stylesheet" media="all" href="/css/googlepay/style.css?asset_version={{asset_version}}" >
+        <link rel="stylesheet" media="all" href="/css/yandexpay/style.css?asset_version={{asset_version}}" >
         <!--<link rel="stylesheet" media="all" href="/payment_params_templates/{{customization_merchant_id}}/css/your.css?asset_version={{asset_version}}" >-->
         <!--ONLY_IN_FRAME--><link rel="stylesheet" media="all" href="/css/payment_params_iframe.css?asset_version={{asset_version}}" ><!--/ONLY_IN_FRAME-->
 
@@ -18,6 +19,8 @@
         <script type="text/javascript" src="/js/applepay/applepay.js?asset_version={{asset_version}}"></script>
         <script type="text/javascript" src="https://pay.google.com/gp/p/js/pay.js"></script>
         <script type="text/javascript" src="/js/googlepay/googlepay.js?asset_version={{asset_version}}"></script>
+        <script type="text/javascript" src="https://pay.yandex.ru/sdk/v1/pay.js"></script>
+        <script type="text/javascript" src="/js/yandexpay/yandexpay.js?asset_version={{asset_version}}"></script>
         <script type="text/javascript" src="/js/jquery.payment_form.js?asset_version={{asset_version}}"></script>
         <script type="text/javascript" src="/js/header.js?asset_version={{asset_version}}"></script>
 
@@ -335,6 +338,9 @@
                                 <!--GOOGLEPAY_DATA-->
                                 <div class="js_googlepay_data" style="display:none;">{{ps_googlepay_data}}</div>
                                 <!--/GOOGLEPAY_DATA-->
+                                <!--YANDEXPAY_DATA-->
+                                <div class="js_yandexpay_data" style="display:none;">{{ps_yandexpay_data}}</div>
+                                <!--/YANDEXPAY_DATA-->
                             </div>
                             <div class="offer_checkbox_container">
                                 <label class="checkbox">
